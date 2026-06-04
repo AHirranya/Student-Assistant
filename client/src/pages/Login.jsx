@@ -1,0 +1,74 @@
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import API from "../services/api";
+
+function Login() {
+  const navigate = useNavigate();
+
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [error, setError] = useState("");
+
+  const handleChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError("");
+
+    try {
+      const res = await API.post("/auth/login", form);
+
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+
+      navigate("/");
+    } catch (err) {
+      setError(err.response?.data?.message || "Login failed");
+    }
+  };
+
+  return (
+    <div className="auth-page">
+      <form className="auth-card" onSubmit={handleLogin}>
+        <h1>Smart College Assistant</h1>
+        <h3>Login</h3>
+
+        {error && <div className="error">{error}</div>}
+
+        <input
+          type="email"
+          name="email"
+          placeholder="Enter email"
+          value={form.email}
+          onChange={handleChange}
+          required
+        />
+
+        <input
+          type="password"
+          name="password"
+          placeholder="Enter password"
+          value={form.password}
+          onChange={handleChange}
+          required
+        />
+
+        <button type="submit">Login</button>
+
+        <p>
+          New user? <Link to="/signup">Create account</Link>
+        </p>
+      </form>
+    </div>
+  );
+}
+
+export default Login;
