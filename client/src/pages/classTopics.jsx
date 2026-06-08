@@ -128,13 +128,16 @@ function ClassTopics() {
         {topics.map((topic) => (
           <div className="card" key={topic.id}>
             <h3>{topic.topic_title}</h3>
+
             <p>
               <strong>Subject:</strong> {topic.subject_name}
             </p>
+
             <p>
               <strong>Date:</strong>{" "}
               {new Date(topic.class_date).toLocaleDateString()}
             </p>
+
             <p>{topic.topic_description}</p>
 
             <span className={topic.attended ? "badge safe" : "badge danger"}>
