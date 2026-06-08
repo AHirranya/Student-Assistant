@@ -9,6 +9,7 @@ const getNotes = async (req, res) => {
 
     res.json(result.rows);
   } catch (error) {
+    console.error("Get notes error:", error);
     res.status(500).json({ message: "Error fetching notes" });
   }
 };
@@ -17,16 +18,30 @@ const addNote = async (req, res) => {
   try {
     const { subject_name, topic_name, note_content, completed } = req.body;
 
+    if (!subject_name || !topic_name) {
+      return res.status(400).json({ message: "Subject and topic are required" });
+    }
+
+    const pdfUrl = req.file ? `/uploads/${req.file.filename}` : null;
+
     const result = await pool.query(
       `INSERT INTO notes
-      (user_id, subject_name, topic_name, note_content, completed)
-      VALUES ($1, $2, $3, $4, $5)
+      (user_id, subject_name, topic_name, note_content, completed, pdf_url)
+      VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING *`,
-      [req.user.id, subject_name, topic_name, note_content, completed || false]
+      [
+        req.user.id,
+        subject_name,
+        topic_name,
+        note_content,
+        completed === true || completed === "true",
+        pdfUrl,
+      ]
     );
 
     res.status(201).json(result.rows[0]);
   } catch (error) {
+    console.error("Add note error:", error);
     res.status(500).json({ message: "Error adding note" });
   }
 };
@@ -55,6 +70,7 @@ const updateNote = async (req, res) => {
 
     res.json(result.rows[0]);
   } catch (error) {
+    console.error("Update note error:", error);
     res.status(500).json({ message: "Error updating note" });
   }
 };
@@ -68,6 +84,7 @@ const deleteNote = async (req, res) => {
 
     res.json({ message: "Note deleted" });
   } catch (error) {
+    console.error("Delete note error:", error);
     res.status(500).json({ message: "Error deleting note" });
   }
 };

@@ -9,6 +9,7 @@ const getReminders = async (req, res) => {
 
     res.json(result.rows);
   } catch (error) {
+    console.error("Get reminders error:", error);
     res.status(500).json({ message: "Error fetching reminders" });
   }
 };
@@ -16,6 +17,18 @@ const getReminders = async (req, res) => {
 const addReminder = async (req, res) => {
   try {
     const { title, description, reminder_date, reminder_time } = req.body;
+
+    if (!title || !reminder_date) {
+      return res.status(400).json({ message: "Title and date are required" });
+    }
+
+    const today = new Date().toISOString().split("T")[0];
+
+    if (reminder_date < today) {
+      return res.status(400).json({
+        message: "Reminder date cannot be in the past",
+      });
+    }
 
     const result = await pool.query(
       `INSERT INTO reminders
@@ -27,6 +40,7 @@ const addReminder = async (req, res) => {
 
     res.status(201).json(result.rows[0]);
   } catch (error) {
+    console.error("Add reminder error:", error);
     res.status(500).json({ message: "Error adding reminder" });
   }
 };
@@ -34,6 +48,14 @@ const addReminder = async (req, res) => {
 const updateReminder = async (req, res) => {
   try {
     const { title, description, reminder_date, reminder_time } = req.body;
+
+    const today = new Date().toISOString().split("T")[0];
+
+    if (reminder_date < today) {
+      return res.status(400).json({
+        message: "Reminder date cannot be in the past",
+      });
+    }
 
     const result = await pool.query(
       `UPDATE reminders
@@ -55,6 +77,7 @@ const updateReminder = async (req, res) => {
 
     res.json(result.rows[0]);
   } catch (error) {
+    console.error("Update reminder error:", error);
     res.status(500).json({ message: "Error updating reminder" });
   }
 };
@@ -68,6 +91,7 @@ const deleteReminder = async (req, res) => {
 
     res.json({ message: "Reminder deleted" });
   } catch (error) {
+    console.error("Delete reminder error:", error);
     res.status(500).json({ message: "Error deleting reminder" });
   }
 };

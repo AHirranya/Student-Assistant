@@ -10,6 +10,11 @@ import CGPA from "./pages/CGPA";
 import ExamPlanner from "./pages/ExamPlanner";
 import Notes from "./pages/Notes";
 import Reminders from "./pages/Reminders";
+import Holidays from "./pages/Holidays";
+import ClassTopics from "./pages/ClassTopics";
+import Internships from "./pages/Internships";
+import Resume from "./pages/Resume";
+import PodAI from "./pages/PodAI";
 import Profile from "./pages/Profile";
 
 function PrivateRoute({ children }) {
@@ -79,6 +84,51 @@ function App() {
           element={
             <PrivateRoute>
               <Reminders />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/holidays"
+          element={
+            <PrivateRoute>
+              <Holidays />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/class-topics"
+          element={
+            <PrivateRoute>
+              <ClassTopics />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/internships"
+          element={
+            <PrivateRoute>
+              <Internships />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/resume"
+          element={
+            <PrivateRoute>
+              <Resume />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/pod-ai"
+          element={
+            <PrivateRoute>
+              <PodAI />
             </PrivateRoute>
           }
         />

@@ -9,6 +9,7 @@ const getAttendance = async (req, res) => {
 
     res.json(result.rows);
   } catch (error) {
+    console.error("Get attendance error:", error);
     res.status(500).json({ message: "Error fetching attendance" });
   }
 };
@@ -21,6 +22,20 @@ const addAttendance = async (req, res) => {
       attended_classes,
       required_percentage,
     } = req.body;
+
+    if (!subject_name || total_classes === "" || attended_classes === "") {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    if (Number(total_classes) < 0 || Number(attended_classes) < 0) {
+      return res.status(400).json({ message: "Classes cannot be negative" });
+    }
+
+    if (Number(attended_classes) > Number(total_classes)) {
+      return res.status(400).json({
+        message: "Attended classes cannot be greater than total classes",
+      });
+    }
 
     const result = await pool.query(
       `INSERT INTO attendance
@@ -52,6 +67,16 @@ const updateAttendance = async (req, res) => {
       required_percentage,
     } = req.body;
 
+    if (Number(total_classes) < 0 || Number(attended_classes) < 0) {
+      return res.status(400).json({ message: "Classes cannot be negative" });
+    }
+
+    if (Number(attended_classes) > Number(total_classes)) {
+      return res.status(400).json({
+        message: "Attended classes cannot be greater than total classes",
+      });
+    }
+
     const result = await pool.query(
       `UPDATE attendance
        SET subject_name = $1,
@@ -72,6 +97,7 @@ const updateAttendance = async (req, res) => {
 
     res.json(result.rows[0]);
   } catch (error) {
+    console.error("Attendance update error:", error);
     res.status(500).json({ message: "Error updating attendance" });
   }
 };
@@ -85,6 +111,7 @@ const deleteAttendance = async (req, res) => {
 
     res.json({ message: "Attendance deleted" });
   } catch (error) {
+    console.error("Attendance delete error:", error);
     res.status(500).json({ message: "Error deleting attendance" });
   }
 };

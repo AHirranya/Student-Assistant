@@ -3,6 +3,7 @@ import API from "../services/api";
 
 function Attendance() {
   const [records, setRecords] = useState([]);
+  const [message, setMessage] = useState("");
 
   const [form, setForm] = useState({
     subject_name: "",
@@ -14,8 +15,12 @@ function Attendance() {
   const [editId, setEditId] = useState(null);
 
   const fetchAttendance = async () => {
-    const res = await API.get("/attendance");
-    setRecords(res.data);
+    try {
+      const res = await API.get("/attendance");
+      setRecords(res.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -23,6 +28,7 @@ function Attendance() {
   }, []);
 
   const handleChange = (e) => {
+    setMessage("");
     setForm({
       ...form,
       [e.target.name]: e.target.value,
@@ -69,22 +75,37 @@ function Attendance() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setMessage("");
 
-    if (editId) {
-      await API.put(`/attendance/${editId}`, form);
-      setEditId(null);
-    } else {
-      await API.post("/attendance", form);
+    if (Number(form.total_classes) < 0 || Number(form.attended_classes) < 0) {
+      setMessage("Classes cannot be negative.");
+      return;
     }
 
-    setForm({
-      subject_name: "",
-      total_classes: "",
-      attended_classes: "",
-      required_percentage: 75,
-    });
+    if (Number(form.attended_classes) > Number(form.total_classes)) {
+      setMessage("Attended classes cannot be greater than total classes.");
+      return;
+    }
 
-    fetchAttendance();
+    try {
+      if (editId) {
+        await API.put(`/attendance/${editId}`, form);
+        setEditId(null);
+      } else {
+        await API.post("/attendance", form);
+      }
+
+      setForm({
+        subject_name: "",
+        total_classes: "",
+        attended_classes: "",
+        required_percentage: 75,
+      });
+
+      fetchAttendance();
+    } catch (error) {
+      setMessage(error.response?.data?.message || "Attendance save failed.");
+    }
   };
 
   const handleEdit = (item) => {
@@ -99,14 +120,22 @@ function Attendance() {
   };
 
   const handleDelete = async (id) => {
-    await API.delete(`/attendance/${id}`);
-    fetchAttendance();
+    try {
+      await API.delete(`/attendance/${id}`);
+      fetchAttendance();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
     <div>
       <h1>Attendance Tracker</h1>
-      <p className="sub-text">Track subject attendance and bunk status.</p>
+      <p className="sub-text">
+        Track subject attendance and prevent invalid attendance entries.
+      </p>
+
+      {message && <div className="error">{message}</div>}
 
       <form className="form-card" onSubmit={handleSubmit}>
         <input
@@ -188,6 +217,7 @@ function Attendance() {
                     >
                       Edit
                     </button>
+
                     <button
                       className="small-btn delete"
                       onClick={() => handleDelete(item.id)}

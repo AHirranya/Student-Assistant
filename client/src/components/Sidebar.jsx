@@ -20,6 +20,11 @@ function Sidebar() {
         <NavLink to="/exams">Exam Planner</NavLink>
         <NavLink to="/notes">Notes</NavLink>
         <NavLink to="/reminders">Reminders</NavLink>
+        <NavLink to="/holidays">Holiday Calendar</NavLink>
+        <NavLink to="/class-topics">Class Topics</NavLink>
+        <NavLink to="/internships">Internships</NavLink>
+        <NavLink to="/resume">Resume</NavLink>
+        <NavLink to="/pod-ai">POD AI</NavLink>
         <NavLink to="/profile">Profile</NavLink>
       </nav>
 
