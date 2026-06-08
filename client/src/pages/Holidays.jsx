@@ -56,7 +56,7 @@ function Holidays() {
     <div>
       <h1>Holiday Calendar</h1>
       <p className="sub-text">
-        Add college holidays and view upcoming holiday alerts.
+        Add college holidays and get notification alerts.
       </p>
 
       {message && <div className="error">{message}</div>}
@@ -93,9 +93,7 @@ function Holidays() {
         {holidays.map((holiday) => (
           <div className="card" key={holiday.id}>
             <h3>{holiday.title}</h3>
-            <p>
-              Date: {new Date(holiday.holiday_date).toLocaleDateString()}
-            </p>
+            <p>Date: {new Date(holiday.holiday_date).toLocaleDateString()}</p>
             <p>{holiday.description}</p>
 
             <button

@@ -10,7 +10,7 @@ function PodAI() {
     e.preventDefault();
 
     if (!prompt.trim()) {
-      alert("Please enter a question.");
+      alert("Please enter your question.");
       return;
     }
 
@@ -18,11 +18,13 @@ function PodAI() {
       setLoading(true);
       setReply("");
 
-      const res = await API.post("/ai/ask", { prompt });
+      const res = await API.post("/ai/ask", {
+        prompt,
+      });
 
       setReply(res.data.reply);
     } catch (error) {
-      setReply(error.response?.data?.message || "AI response failed.");
+      setReply(error.response?.data?.message || "POD AI failed.");
     } finally {
       setLoading(false);
     }
@@ -32,13 +34,13 @@ function PodAI() {
     <div>
       <h1>POD AI</h1>
       <p className="sub-text">
-        Personal Organizer and Doubt Assistant for study planning, internships,
-        resume tips, and revision help.
+        Personal Organizer and Doubt Assistant for study planning, notes,
+        internships, and resume improvement.
       </p>
 
       <form className="form-card" onSubmit={askAI}>
         <textarea
-          placeholder="Ask POD AI, example: Plan my study for DBMS exam in 5 days"
+          placeholder="Ask POD AI, example: Make a study plan for my DBMS exam"
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
           required
