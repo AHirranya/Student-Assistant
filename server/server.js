@@ -20,12 +20,16 @@ const app = express();
 
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    origin: [
+      "http://localhost:5173",
+      process.env.CLIENT_URL,
+    ].filter(Boolean),
     credentials: true,
   })
 );
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
@@ -39,12 +43,26 @@ app.use("/api/cgpa", cgpaRoutes);
 app.use("/api/exams", examRoutes);
 app.use("/api/notes", notesRoutes);
 app.use("/api/reminders", reminderRoutes);
-
 app.use("/api/holidays", holidayRoutes);
 app.use("/api/class-topics", classTopicRoutes);
 app.use("/api/internships", internshipRoutes);
 app.use("/api/resumes", resumeRoutes);
 app.use("/api/ai", aiRoutes);
+
+app.use((req, res) => {
+  res.status(404).json({
+    message: "API route not found",
+    path: req.originalUrl,
+  });
+});
+
+app.use((err, req, res, next) => {
+  console.error("Server error:", err);
+
+  res.status(500).json({
+    message: err.message || "Internal server error",
+  });
+});
 
 const PORT = process.env.PORT || 5000;
 
