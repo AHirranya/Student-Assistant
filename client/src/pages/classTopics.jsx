@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import API from "../services/api";
 
 function ClassTopics() {
+  const today = new Date().toISOString().split("T")[0];
+
   const [topics, setTopics] = useState([]);
   const [message, setMessage] = useState("");
-
-  const today = new Date().toISOString().split("T")[0];
 
   const [form, setForm] = useState({
     subject_name: "",
@@ -20,7 +20,7 @@ function ClassTopics() {
       const res = await API.get("/class-topics");
       setTopics(res.data);
     } catch (error) {
-      console.log(error);
+      setMessage(error.response?.data?.message || "Failed to load topics.");
     }
   };
 
@@ -60,8 +60,12 @@ function ClassTopics() {
   };
 
   const deleteTopic = async (id) => {
-    await API.delete(`/class-topics/${id}`);
-    fetchTopics();
+    try {
+      await API.delete(`/class-topics/${id}`);
+      fetchTopics();
+    } catch (error) {
+      setMessage(error.response?.data?.message || "Class topic delete failed.");
+    }
   };
 
   return (

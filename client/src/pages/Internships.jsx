@@ -19,7 +19,7 @@ function Internships() {
       const res = await API.get("/internships");
       setInternships(res.data);
     } catch (error) {
-      console.log(error);
+      setMessage(error.response?.data?.message || "Failed to load internships.");
     }
   };
 
@@ -54,8 +54,12 @@ function Internships() {
   };
 
   const deleteInternship = async (id) => {
-    await API.delete(`/internships/${id}`);
-    fetchInternships();
+    try {
+      await API.delete(`/internships/${id}`);
+      fetchInternships();
+    } catch (error) {
+      setMessage(error.response?.data?.message || "Internship delete failed.");
+    }
   };
 
   return (
@@ -138,7 +142,11 @@ function Internships() {
             <p>{internship.notes}</p>
 
             {internship.application_link && (
-              <a href={internship.application_link} target="_blank">
+              <a
+                href={internship.application_link}
+                target="_blank"
+                rel="noreferrer"
+              >
                 Apply / Open Link
               </a>
             )}

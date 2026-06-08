@@ -16,7 +16,7 @@ function Holidays() {
       const res = await API.get("/holidays");
       setHolidays(res.data);
     } catch (error) {
-      console.log(error);
+      setMessage(error.response?.data?.message || "Failed to load holidays.");
     }
   };
 
@@ -48,15 +48,19 @@ function Holidays() {
   };
 
   const deleteHoliday = async (id) => {
-    await API.delete(`/holidays/${id}`);
-    fetchHolidays();
+    try {
+      await API.delete(`/holidays/${id}`);
+      fetchHolidays();
+    } catch (error) {
+      setMessage(error.response?.data?.message || "Holiday delete failed.");
+    }
   };
 
   return (
     <div>
       <h1>Holiday Calendar</h1>
       <p className="sub-text">
-        Add college holidays and get notification alerts.
+        Add college holidays and view upcoming holiday alerts.
       </p>
 
       {message && <div className="error">{message}</div>}
@@ -93,7 +97,9 @@ function Holidays() {
         {holidays.map((holiday) => (
           <div className="card" key={holiday.id}>
             <h3>{holiday.title}</h3>
-            <p>Date: {new Date(holiday.holiday_date).toLocaleDateString()}</p>
+            <p>
+              Date: {new Date(holiday.holiday_date).toLocaleDateString()}
+            </p>
             <p>{holiday.description}</p>
 
             <button

@@ -5,6 +5,9 @@ function Resume() {
   const [resumes, setResumes] = useState([]);
   const [message, setMessage] = useState("");
 
+  const backendBaseUrl =
+    import.meta.env.VITE_API_URL?.replace("/api", "") || "http://localhost:5000";
+
   const [form, setForm] = useState({
     resume_title: "",
     ats_score: "",
@@ -12,15 +15,12 @@ function Resume() {
     resume_pdf: null,
   });
 
-  const backendBaseUrl =
-    import.meta.env.VITE_API_URL?.replace("/api", "") || "http://localhost:5000";
-
   const fetchResumes = async () => {
     try {
       const res = await API.get("/resumes");
       setResumes(res.data);
     } catch (error) {
-      console.log(error);
+      setMessage(error.response?.data?.message || "Failed to load resumes.");
     }
   };
 
@@ -73,8 +73,12 @@ function Resume() {
   };
 
   const deleteResume = async (id) => {
-    await API.delete(`/resumes/${id}`);
-    fetchResumes();
+    try {
+      await API.delete(`/resumes/${id}`);
+      fetchResumes();
+    } catch (error) {
+      setMessage(error.response?.data?.message || "Resume delete failed.");
+    }
   };
 
   return (
@@ -134,6 +138,7 @@ function Resume() {
               <a
                 href={`${backendBaseUrl}${resume.resume_file_url}`}
                 target="_blank"
+                rel="noreferrer"
               >
                 View Resume PDF
               </a>
