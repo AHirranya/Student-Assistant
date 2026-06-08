@@ -22,6 +22,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
+      "https://student-assistant-frontend.onrender.com",
       process.env.CLIENT_URL,
     ].filter(Boolean),
     credentials: true,
