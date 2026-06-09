@@ -82,7 +82,9 @@ function Dashboard() {
   );
 
   const overallAttendance =
-    totalClasses > 0 ? Number(((attendedClasses / totalClasses) * 100).toFixed(2)) : 0;
+    totalClasses > 0
+      ? Number(((attendedClasses / totalClasses) * 100).toFixed(2))
+      : 0;
 
   const getAttendanceStatus = (percentage) => {
     if (percentage < 50) {
@@ -137,6 +139,16 @@ function Dashboard() {
   tomorrowDate.setDate(tomorrowDate.getDate() + 1);
   const tomorrow = tomorrowDate.toISOString().split("T")[0];
 
+  /*
+    Smart Notifications only includes:
+    1. Holidays
+    2. Exams
+    3. Reminders
+    4. Internship deadlines
+
+    Attendance is NOT added here.
+    Attendance is shown separately in Attendance Warnings.
+  */
   const notifications = [];
 
   holidays.forEach((item) => {
@@ -204,13 +216,6 @@ function Dashboard() {
     }
   });
 
-  warningSubjects.forEach((item) => {
-    notifications.push({
-      id: `attendance-${item.id}`,
-      text: `⚠ ${item.subject_name} attendance is below required percentage.`,
-    });
-  });
-
   return (
     <div>
       <div className="dashboard-header">
@@ -275,13 +280,15 @@ function Dashboard() {
         </div>
 
         <div className="card">
-          <h3>Total Notifications</h3>
+          <h3>Smart Notifications</h3>
           <h1>{notifications.length}</h1>
         </div>
       </div>
 
       <div className={`section-card attendance-alert-box ${overallStatus.className}`}>
-        <h2>{overallStatus.icon} Attendance Status: {overallStatus.label}</h2>
+        <h2>
+          {overallStatus.icon} Attendance Status: {overallStatus.label}
+        </h2>
         <p>{overallStatus.message}</p>
 
         {overallAttendance < 50 && (
@@ -306,9 +313,7 @@ function Dashboard() {
         )}
 
         {overallAttendance >= 75 && (
-          <p>
-            Your attendance is safe. Continue maintaining it.
-          </p>
+          <p>Your attendance is safe. Continue maintaining it.</p>
         )}
       </div>
 
