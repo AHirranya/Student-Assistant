@@ -9,7 +9,6 @@ const cgpaRoutes = require("./routes/cgpaRoutes");
 const examRoutes = require("./routes/examRoutes");
 const notesRoutes = require("./routes/notesRoutes");
 const reminderRoutes = require("./routes/reminderRoutes");
-
 const holidayRoutes = require("./routes/holidayRoutes");
 const classTopicRoutes = require("./routes/classTopicRoutes");
 const internshipRoutes = require("./routes/internshipRoutes");
@@ -36,6 +35,10 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.get("/", (req, res) => {
   res.send("Smart College Assistant API is running...");
+});
+
+app.get("/api/test", (req, res) => {
+  res.json({ message: "API test route working" });
 });
 
 app.use("/api/auth", authRoutes);
