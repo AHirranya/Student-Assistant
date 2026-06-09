@@ -21,6 +21,7 @@ function Dashboard() {
   const [exams, setExams] = useState([]);
   const [holidays, setHolidays] = useState([]);
   const [internships, setInternships] = useState([]);
+  const [showNotifications, setShowNotifications] = useState(false);
 
   const user = getUser();
 
@@ -98,42 +99,118 @@ function Dashboard() {
   tomorrowDate.setDate(tomorrowDate.getDate() + 1);
   const tomorrow = tomorrowDate.toISOString().split("T")[0];
 
-  const todayReminders = reminders.filter(
-    (item) => item.reminder_date?.slice(0, 10) === today
-  );
+  const notifications = [];
 
-  const tomorrowReminders = reminders.filter(
-    (item) => item.reminder_date?.slice(0, 10) === tomorrow
-  );
+  holidays.forEach((item) => {
+    const date = item.holiday_date?.slice(0, 10);
 
-  const todayExams = exams.filter(
-    (item) => item.exam_date?.slice(0, 10) === today
-  );
+    if (date === today) {
+      notifications.push({
+        id: `holiday-today-${item.id}`,
+        text: `🎉 Today is holiday: ${item.title}`,
+      });
+    }
 
-  const tomorrowExams = exams.filter(
-    (item) => item.exam_date?.slice(0, 10) === tomorrow
-  );
+    if (date === tomorrow) {
+      notifications.push({
+        id: `holiday-tomorrow-${item.id}`,
+        text: `🎉 Tomorrow is holiday: ${item.title}`,
+      });
+    }
+  });
 
-  const todayHolidays = holidays.filter(
-    (item) => item.holiday_date?.slice(0, 10) === today
-  );
+  exams.forEach((item) => {
+    const date = item.exam_date?.slice(0, 10);
 
-  const tomorrowHolidays = holidays.filter(
-    (item) => item.holiday_date?.slice(0, 10) === tomorrow
-  );
+    if (date === today) {
+      notifications.push({
+        id: `exam-today-${item.id}`,
+        text: `📝 Exam today: ${item.subject_name}`,
+      });
+    }
 
-  const internshipDeadlines = internships.filter(
-    (item) =>
-      item.deadline?.slice(0, 10) === today ||
-      item.deadline?.slice(0, 10) === tomorrow
-  );
+    if (date === tomorrow) {
+      notifications.push({
+        id: `exam-tomorrow-${item.id}`,
+        text: `📝 Exam tomorrow: ${item.subject_name}`,
+      });
+    }
+  });
+
+  reminders.forEach((item) => {
+    const date = item.reminder_date?.slice(0, 10);
+
+    if (date === today) {
+      notifications.push({
+        id: `reminder-today-${item.id}`,
+        text: `🔔 Reminder today: ${item.title}`,
+      });
+    }
+
+    if (date === tomorrow) {
+      notifications.push({
+        id: `reminder-tomorrow-${item.id}`,
+        text: `🔔 Reminder tomorrow: ${item.title}`,
+      });
+    }
+  });
+
+  internships.forEach((item) => {
+    const date = item.deadline?.slice(0, 10);
+
+    if (date === today || date === tomorrow) {
+      notifications.push({
+        id: `internship-${item.id}`,
+        text: `💼 Internship deadline: ${item.company_name} - ${item.role_title}`,
+      });
+    }
+  });
+
+  warningSubjects.forEach((item) => {
+    notifications.push({
+      id: `attendance-${item.id}`,
+      text: `⚠ ${item.subject_name} attendance is below required percentage.`,
+    });
+  });
 
   return (
     <div>
-      <h1>Dashboard</h1>
-      <p className="sub-text">
-        Welcome back, {user?.name || "Student"}
-      </p>
+      <div className="dashboard-header">
+        <div>
+          <h1>Dashboard</h1>
+          <p className="sub-text">Welcome back, {user?.name || "Student"}</p>
+        </div>
+
+        <div className="notification-wrapper">
+          <button
+            className="notification-btn"
+            onClick={() => setShowNotifications(!showNotifications)}
+          >
+            🔔
+            {notifications.length > 0 && (
+              <span className="notification-count">
+                {notifications.length}
+              </span>
+            )}
+          </button>
+
+          {showNotifications && (
+            <div className="notification-box">
+              <h3>Notifications</h3>
+
+              {notifications.length === 0 ? (
+                <p>No notifications today.</p>
+              ) : (
+                notifications.map((notification) => (
+                  <div className="notification-item" key={notification.id}>
+                    {notification.text}
+                  </div>
+                ))
+              )}
+            </div>
+          )}
+        </div>
+      </div>
 
       <div className="cards-grid">
         <div className="card">
@@ -155,57 +232,21 @@ function Dashboard() {
         </div>
 
         <div className="card">
-          <h3>Today’s Reminders</h3>
-          <h1>{todayReminders.length}</h1>
+          <h3>Total Notifications</h3>
+          <h1>{notifications.length}</h1>
         </div>
       </div>
 
       <div className="section-card">
         <h2>Smart Notifications</h2>
 
-        {todayHolidays.map((item) => (
-          <p key={`holiday-today-${item.id}`}>🎉 Today is holiday: {item.title}</p>
-        ))}
-
-        {tomorrowHolidays.map((item) => (
-          <p key={`holiday-tomorrow-${item.id}`}>
-            🎉 Tomorrow is holiday: {item.title}
-          </p>
-        ))}
-
-        {todayExams.map((item) => (
-          <p key={`exam-today-${item.id}`}>📝 Exam today: {item.subject_name}</p>
-        ))}
-
-        {tomorrowExams.map((item) => (
-          <p key={`exam-tomorrow-${item.id}`}>
-            📝 Exam tomorrow: {item.subject_name}
-          </p>
-        ))}
-
-        {todayReminders.map((item) => (
-          <p key={`reminder-today-${item.id}`}>🔔 Reminder today: {item.title}</p>
-        ))}
-
-        {tomorrowReminders.map((item) => (
-          <p key={`reminder-tomorrow-${item.id}`}>
-            🔔 Reminder tomorrow: {item.title}
-          </p>
-        ))}
-
-        {internshipDeadlines.map((item) => (
-          <p key={`internship-${item.id}`}>
-            💼 Internship deadline: {item.company_name} - {item.role_title}
-          </p>
-        ))}
-
-        {todayHolidays.length === 0 &&
-          tomorrowHolidays.length === 0 &&
-          todayExams.length === 0 &&
-          tomorrowExams.length === 0 &&
-          todayReminders.length === 0 &&
-          tomorrowReminders.length === 0 &&
-          internshipDeadlines.length === 0 && <p>No notifications today.</p>}
+        {notifications.length === 0 ? (
+          <p>No notifications today.</p>
+        ) : (
+          notifications.map((notification) => (
+            <p key={notification.id}>{notification.text}</p>
+          ))
+        )}
       </div>
 
       <div className="section-card">
