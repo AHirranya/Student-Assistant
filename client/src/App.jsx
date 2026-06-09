@@ -1,6 +1,5 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-
-import Layout from "./components/Layout";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { useEffect } from "react";
 
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -16,26 +15,68 @@ import Internships from "./pages/Internships";
 import Resume from "./pages/Resume";
 import PodAI from "./pages/PodAI";
 import Profile from "./pages/Profile";
+import Layout from "./components/Layout";
+
+function isLoggedIn() {
+  const token = localStorage.getItem("token");
+  return Boolean(token);
+}
+
+function ScrollToTop() {
+  const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+
+    const mainContent = document.querySelector(".main-content");
+    if (mainContent) {
+      mainContent.scrollTo(0, 0);
+    }
+  }, [location.pathname]);
+
+  return null;
+}
 
 function PrivateRoute({ children }) {
-  const token = localStorage.getItem("token");
-
-  if (!token) {
+  if (!isLoggedIn()) {
     return <Navigate to="/login" replace />;
   }
 
   return <Layout>{children}</Layout>;
 }
 
+function PublicRoute({ children }) {
+  if (isLoggedIn()) {
+    return <Navigate to="/" replace />;
+  }
+
+  return children;
+}
+
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        {/* Public Routes */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
+      <ScrollToTop />
 
-        {/* Protected Routes */}
+      <Routes>
+        <Route
+          path="/login"
+          element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
+          }
+        />
+
+        <Route
+          path="/signup"
+          element={
+            <PublicRoute>
+              <Signup />
+            </PublicRoute>
+          }
+        />
+
         <Route
           path="/"
           element={
@@ -144,7 +185,6 @@ function App() {
           }
         />
 
-        {/* Wrong URL redirect */}
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>
