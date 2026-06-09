@@ -82,7 +82,45 @@ function Dashboard() {
   );
 
   const overallAttendance =
-    totalClasses > 0 ? ((attendedClasses / totalClasses) * 100).toFixed(2) : 0;
+    totalClasses > 0 ? Number(((attendedClasses / totalClasses) * 100).toFixed(2)) : 0;
+
+  const getAttendanceStatus = (percentage) => {
+    if (percentage < 50) {
+      return {
+        label: "Critical Danger",
+        message: "Very low attendance. Immediate action required.",
+        className: "attendance-critical",
+        icon: "🚨",
+      };
+    }
+
+    if (percentage < 65) {
+      return {
+        label: "High Risk",
+        message: "Attendance is risky. Avoid bunking classes.",
+        className: "attendance-high-risk",
+        icon: "⚠️",
+      };
+    }
+
+    if (percentage < 75) {
+      return {
+        label: "Warning",
+        message: "Attendance is below 75%. Be careful.",
+        className: "attendance-warning",
+        icon: "⚡",
+      };
+    }
+
+    return {
+      label: "Safe",
+      message: "Attendance is good.",
+      className: "attendance-safe",
+      icon: "✅",
+    };
+  };
+
+  const overallStatus = getAttendanceStatus(overallAttendance);
 
   const warningSubjects = attendance.filter((item) => {
     if (Number(item.total_classes) === 0) return false;
@@ -188,9 +226,7 @@ function Dashboard() {
           >
             🔔
             {notifications.length > 0 && (
-              <span className="notification-count">
-                {notifications.length}
-              </span>
+              <span className="notification-count">{notifications.length}</span>
             )}
           </button>
 
@@ -218,12 +254,19 @@ function Dashboard() {
           <h1>{totalSubjects}</h1>
         </div>
 
-        <div className="card">
+        <div className={`card attendance-status-card ${overallStatus.className}`}>
           <h3>Overall Attendance</h3>
           <h1>{overallAttendance}%</h1>
           <p>
             {attendedClasses} / {totalClasses} classes attended
           </p>
+
+          <div className="attendance-status-badge">
+            <span>{overallStatus.icon}</span>
+            <strong>{overallStatus.label}</strong>
+          </div>
+
+          <p className="attendance-status-message">{overallStatus.message}</p>
         </div>
 
         <div className="card">
@@ -235,6 +278,38 @@ function Dashboard() {
           <h3>Total Notifications</h3>
           <h1>{notifications.length}</h1>
         </div>
+      </div>
+
+      <div className={`section-card attendance-alert-box ${overallStatus.className}`}>
+        <h2>{overallStatus.icon} Attendance Status: {overallStatus.label}</h2>
+        <p>{overallStatus.message}</p>
+
+        {overallAttendance < 50 && (
+          <p>
+            Your attendance is below 50%. You should attend all upcoming classes
+            and avoid missing any lectures.
+          </p>
+        )}
+
+        {overallAttendance >= 50 && overallAttendance < 65 && (
+          <p>
+            Your attendance is below 65%. You are in a risky zone, so attend
+            classes regularly.
+          </p>
+        )}
+
+        {overallAttendance >= 65 && overallAttendance < 75 && (
+          <p>
+            Your attendance is below the common 75% requirement. Try to improve
+            it soon.
+          </p>
+        )}
+
+        {overallAttendance >= 75 && (
+          <p>
+            Your attendance is safe. Continue maintaining it.
+          </p>
+        )}
       </div>
 
       <div className="section-card">
@@ -254,11 +329,35 @@ function Dashboard() {
 
         {warningSubjects.length === 0 && <p>No attendance warnings.</p>}
 
-        {warningSubjects.map((item) => (
-          <p key={item.id}>
-            ⚠ {item.subject_name} attendance is below required percentage.
-          </p>
-        ))}
+        {warningSubjects.map((item) => {
+          const percent =
+            Number(item.total_classes) > 0
+              ? (
+                  (Number(item.attended_classes) /
+                    Number(item.total_classes)) *
+                  100
+                ).toFixed(2)
+              : 0;
+
+          const status = getAttendanceStatus(Number(percent));
+
+          return (
+            <div
+              key={item.id}
+              className={`subject-warning-item ${status.className}`}
+            >
+              <strong>
+                {status.icon} {item.subject_name}
+              </strong>
+              <p>
+                Attendance: {percent}% — {status.label}
+              </p>
+              <p>
+                {item.attended_classes} / {item.total_classes} classes attended
+              </p>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
