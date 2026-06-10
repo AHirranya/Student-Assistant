@@ -27,11 +27,11 @@ function Sidebar() {
   return (
     <aside className="sidebar">
       <div className="brand-box">
-        <div className="brand-logo">SC</div>
+        <div className="brand-logo">CM</div>
 
         <div className="brand-text">
-          <h2>Smart College</h2>
-          <p>Assistant</p>
+          <h2>CampusMate</h2>
+          <p>Your Smart College Companion</p>
         </div>
 
         <button className="mobile-logout" onClick={logout}>
