@@ -23,7 +23,7 @@ select {
 }
 
 /* =========================
-   AUTH PAGES - CAMPUSMATE
+   AUTH PAGES
 ========================= */
 
 .auth-page,
@@ -858,6 +858,8 @@ th {
 
 /* =========================
    PLAY STORE READY MOBILE UI
+   Bottom nav has only 4 tabs:
+   Home | Attendance | Exams | Profile
 ========================= */
 
 @media (max-width: 768px) {
@@ -963,11 +965,11 @@ th {
 
   .sidebar nav {
     position: fixed !important;
-    left: 12px !important;
-    right: 12px !important;
+    left: 14px !important;
+    right: 14px !important;
     bottom: 12px !important;
-    height: 70px !important;
-    padding: 8px !important;
+    height: 72px !important;
+    padding: 9px !important;
     z-index: 1000;
     background: rgba(255, 255, 255, 0.98) !important;
     border: 1px solid #e5e7eb;
@@ -976,7 +978,7 @@ th {
     display: flex !important;
     flex-direction: row !important;
     justify-content: space-between !important;
-    gap: 6px !important;
+    gap: 8px !important;
     overflow: hidden !important;
   }
 
@@ -984,8 +986,8 @@ th {
     flex: 1 !important;
     min-width: 0 !important;
     height: 54px !important;
-    padding: 6px 3px !important;
-    border-radius: 19px !important;
+    padding: 7px 4px !important;
+    border-radius: 20px !important;
     background: transparent !important;
     color: #64748b !important;
     display: flex !important;
@@ -1004,12 +1006,12 @@ th {
   }
 
   .nav-icon {
-    font-size: 18px !important;
+    font-size: 20px !important;
     line-height: 1 !important;
   }
 
   .nav-label {
-    font-size: 8.8px !important;
+    font-size: 10px !important;
     line-height: 1 !important;
     white-space: nowrap !important;
   }
@@ -1018,7 +1020,7 @@ th {
     margin-left: 0 !important;
     width: 100% !important;
     min-height: 100vh;
-    padding: 92px 14px 104px !important;
+    padding: 92px 14px 108px !important;
     overflow-x: hidden !important;
     background:
       radial-gradient(circle at top right, rgba(99, 102, 241, 0.09), transparent 35%),
@@ -1207,7 +1209,7 @@ th {
 
 @media (max-width: 420px) {
   .main-content {
-    padding: 90px 12px 104px !important;
+    padding: 90px 12px 108px !important;
   }
 
   .dashboard-card-grid {
@@ -1226,7 +1228,7 @@ th {
   }
 
   .nav-label {
-    font-size: 8px !important;
+    font-size: 9px !important;
   }
 
   .mobile-auth-page,
@@ -1237,4 +1239,4 @@ th {
   .auth-welcome-card h1 {
     font-size: 34px;
   }
-}
+} 

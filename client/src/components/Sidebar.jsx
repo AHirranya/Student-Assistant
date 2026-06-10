@@ -15,7 +15,7 @@ function Sidebar() {
     { path: "/cgpa", icon: "📊", label: "CGPA", mobile: false },
     { path: "/exams", icon: "📘", label: "Exams", mobile: true },
     { path: "/notes", icon: "📝", label: "Notes", mobile: false },
-    { path: "/reminders", icon: "🔔", label: "Alerts", mobile: true },
+    { path: "/reminders", icon: "🔔", label: "Alerts", mobile: false },
     { path: "/holidays", icon: "🎉", label: "Holidays", mobile: false },
     { path: "/class-topics", icon: "📚", label: "Topics", mobile: false },
     { path: "/internships", icon: "💼", label: "Jobs", mobile: false },
