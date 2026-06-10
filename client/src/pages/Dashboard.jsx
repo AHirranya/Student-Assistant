@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import API from "../services/api";
 
 function getUser() {
@@ -221,7 +222,9 @@ function Dashboard() {
       <div className="dashboard-top">
         <div>
           <h1>Dashboard</h1>
-          <p className="sub-text">Welcome back, {user?.name || "Student"} 👋</p>
+          <p className="sub-text">
+            Welcome back, {user?.name || "Student"} 👋
+          </p>
         </div>
 
         <div className="notification-wrapper">
@@ -252,6 +255,76 @@ function Dashboard() {
               )}
             </div>
           )}
+        </div>
+      </div>
+
+      <div className="quick-actions-card">
+        <h2>My Actions</h2>
+        <p>Access all student tools from one place</p>
+
+        <div className="quick-actions-grid">
+          <Link to="/cgpa" className="quick-action-item">
+            <span>📊</span>
+            <div>
+              <strong>CGPA</strong>
+              <p>Calculate semester CGPA</p>
+            </div>
+            <b>›</b>
+          </Link>
+
+          <Link to="/notes" className="quick-action-item">
+            <span>📝</span>
+            <div>
+              <strong>Notes</strong>
+              <p>Upload and manage notes</p>
+            </div>
+            <b>›</b>
+          </Link>
+
+          <Link to="/holidays" className="quick-action-item">
+            <span>🎉</span>
+            <div>
+              <strong>Holidays</strong>
+              <p>View college holidays</p>
+            </div>
+            <b>›</b>
+          </Link>
+
+          <Link to="/class-topics" className="quick-action-item">
+            <span>📚</span>
+            <div>
+              <strong>Topics</strong>
+              <p>Track today&apos;s class topics</p>
+            </div>
+            <b>›</b>
+          </Link>
+
+          <Link to="/internships" className="quick-action-item">
+            <span>💼</span>
+            <div>
+              <strong>Internships</strong>
+              <p>Track applications</p>
+            </div>
+            <b>›</b>
+          </Link>
+
+          <Link to="/resume" className="quick-action-item">
+            <span>📄</span>
+            <div>
+              <strong>Resume</strong>
+              <p>Manage resume and ATS score</p>
+            </div>
+            <b>›</b>
+          </Link>
+
+          <Link to="/pod-ai" className="quick-action-item">
+            <span>🤖</span>
+            <div>
+              <strong>POD AI</strong>
+              <p>Ask your study assistant</p>
+            </div>
+            <b>›</b>
+          </Link>
         </div>
       </div>
 
@@ -404,7 +477,8 @@ function Dashboard() {
                   {percent}% attendance — {status.label}
                 </p>
                 <p>
-                  {item.attended_classes} / {item.total_classes} classes attended
+                  {item.attended_classes} / {item.total_classes} classes
+                  attended
                 </p>
               </div>
             );
