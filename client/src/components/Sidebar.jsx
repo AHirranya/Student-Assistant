@@ -10,66 +10,18 @@ function Sidebar() {
   };
 
   const menuItems = [
-    {
-      path: "/",
-      icon: "🏠",
-      label: "Dashboard",
-    },
-    {
-      path: "/attendance",
-      icon: "📅",
-      label: "Attendance",
-    },
-    {
-      path: "/cgpa",
-      icon: "📊",
-      label: "CGPA",
-    },
-    {
-      path: "/exams",
-      icon: "📘",
-      label: "Exams",
-    },
-    {
-      path: "/notes",
-      icon: "📝",
-      label: "Notes",
-    },
-    {
-      path: "/reminders",
-      icon: "🔔",
-      label: "Reminders",
-    },
-    {
-      path: "/holidays",
-      icon: "🎉",
-      label: "Holidays",
-    },
-    {
-      path: "/class-topics",
-      icon: "📚",
-      label: "Class Topics",
-    },
-    {
-      path: "/internships",
-      icon: "💼",
-      label: "Internships",
-    },
-    {
-      path: "/resume",
-      icon: "📄",
-      label: "Resume",
-    },
-    {
-      path: "/pod-ai",
-      icon: "🤖",
-      label: "POD AI",
-    },
-    {
-      path: "/profile",
-      icon: "👤",
-      label: "Profile",
-    },
+    { path: "/", icon: "🏠", label: "Home" },
+    { path: "/attendance", icon: "📅", label: "Attendance" },
+    { path: "/cgpa", icon: "📊", label: "CGPA" },
+    { path: "/exams", icon: "📘", label: "Exams" },
+    { path: "/notes", icon: "📝", label: "Notes" },
+    { path: "/reminders", icon: "🔔", label: "Alerts" },
+    { path: "/holidays", icon: "🎉", label: "Holidays" },
+    { path: "/class-topics", icon: "📚", label: "Topics" },
+    { path: "/internships", icon: "💼", label: "Jobs" },
+    { path: "/resume", icon: "📄", label: "Resume" },
+    { path: "/pod-ai", icon: "🤖", label: "AI" },
+    { path: "/profile", icon: "👤", label: "Profile" },
   ];
 
   return (
@@ -77,10 +29,14 @@ function Sidebar() {
       <div className="brand-box">
         <div className="brand-logo">SC</div>
 
-        <div>
+        <div className="brand-text">
           <h2>Smart College</h2>
           <p>Assistant</p>
         </div>
+
+        <button className="mobile-logout" onClick={logout}>
+          Logout
+        </button>
       </div>
 
       <nav>
