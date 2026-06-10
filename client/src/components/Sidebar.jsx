@@ -9,19 +9,26 @@ function Sidebar() {
     navigate("/login");
   };
 
-  const menuItems = [
-    { path: "/", icon: "🏠", label: "Home", mobile: true },
-    { path: "/attendance", icon: "📅", label: "Attendance", mobile: true },
-    { path: "/cgpa", icon: "📊", label: "CGPA", mobile: false },
-    { path: "/exams", icon: "📘", label: "Exams", mobile: true },
-    { path: "/notes", icon: "📝", label: "Notes", mobile: false },
-    { path: "/reminders", icon: "🔔", label: "Alerts", mobile: false },
-    { path: "/holidays", icon: "🎉", label: "Holidays", mobile: false },
-    { path: "/class-topics", icon: "📚", label: "Topics", mobile: false },
-    { path: "/internships", icon: "💼", label: "Jobs", mobile: false },
-    { path: "/resume", icon: "📄", label: "Resume", mobile: false },
-    { path: "/pod-ai", icon: "🤖", label: "AI", mobile: false },
-    { path: "/profile", icon: "👤", label: "Profile", mobile: true },
+  const desktopMenuItems = [
+    { path: "/", icon: "🏠", label: "Home" },
+    { path: "/attendance", icon: "📅", label: "Attendance" },
+    { path: "/cgpa", icon: "📊", label: "CGPA" },
+    { path: "/exams", icon: "📘", label: "Exams" },
+    { path: "/notes", icon: "📝", label: "Notes" },
+    { path: "/reminders", icon: "🔔", label: "Alerts" },
+    { path: "/holidays", icon: "🎉", label: "Holidays" },
+    { path: "/class-topics", icon: "📚", label: "Topics" },
+    { path: "/internships", icon: "💼", label: "Jobs" },
+    { path: "/resume", icon: "📄", label: "Resume" },
+    { path: "/pod-ai", icon: "🤖", label: "AI" },
+    { path: "/profile", icon: "👤", label: "Profile" },
+  ];
+
+  const mobileMenuItems = [
+    { path: "/", icon: "🏠", label: "Home" },
+    { path: "/attendance", icon: "📅", label: "Attendance" },
+    { path: "/exams", icon: "📘", label: "Exams" },
+    { path: "/profile", icon: "👤", label: "Profile" },
   ];
 
   return (
@@ -39,16 +46,30 @@ function Sidebar() {
         </button>
       </div>
 
-      <nav>
-        {menuItems.map((item) => (
+      <nav className="desktop-nav">
+        {desktopMenuItems.map((item) => (
           <NavLink
             key={item.path}
             to={item.path}
             end={item.path === "/"}
             className={({ isActive }) =>
-              `${isActive ? "nav-link active" : "nav-link"} ${
-                item.mobile ? "mobile-show" : "mobile-hide"
-              }`
+              isActive ? "nav-link active" : "nav-link"
+            }
+          >
+            <span className="nav-icon">{item.icon}</span>
+            <span className="nav-label">{item.label}</span>
+          </NavLink>
+        ))}
+      </nav>
+
+      <nav className="mobile-nav">
+        {mobileMenuItems.map((item) => (
+          <NavLink
+            key={item.path}
+            to={item.path}
+            end={item.path === "/"}
+            className={({ isActive }) =>
+              isActive ? "nav-link active" : "nav-link"
             }
           >
             <span className="nav-icon">{item.icon}</span>

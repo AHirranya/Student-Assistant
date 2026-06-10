@@ -1240,3 +1240,93 @@ th {
     font-size: 34px;
   }
 } 
+/* =========================
+   FINAL MOBILE NAV FIX
+   Only 4 buttons visible on phone
+   Home | Attendance | Exams | Profile
+========================= */
+
+.desktop-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mobile-nav {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .desktop-nav {
+    display: none !important;
+  }
+
+  .mobile-nav {
+    position: fixed !important;
+    left: 14px !important;
+    right: 14px !important;
+    bottom: 12px !important;
+    height: 72px !important;
+    padding: 9px !important;
+    z-index: 3000 !important;
+    background: rgba(255, 255, 255, 0.98) !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 26px !important;
+    box-shadow: 0 16px 42px rgba(15, 23, 42, 0.2) !important;
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 8px !important;
+    overflow: hidden !important;
+  }
+
+  .mobile-nav .nav-link {
+    width: 100% !important;
+    height: 54px !important;
+    min-width: 0 !important;
+    padding: 7px 4px !important;
+    border-radius: 20px !important;
+    background: transparent !important;
+    color: #64748b !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 3px !important;
+    text-align: center !important;
+    box-shadow: none !important;
+  }
+
+  .mobile-nav .nav-link:hover {
+    background: #f1f5f9 !important;
+    transform: none !important;
+  }
+
+  .mobile-nav .nav-link.active {
+    background: linear-gradient(135deg, #6366f1, #0ea5e9) !important;
+    color: white !important;
+    box-shadow: 0 8px 18px rgba(37, 99, 235, 0.28) !important;
+  }
+
+  .mobile-nav .nav-icon {
+    font-size: 20px !important;
+    line-height: 1 !important;
+  }
+
+  .mobile-nav .nav-label {
+    font-size: 10px !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+  }
+
+  .sidebar nav:not(.mobile-nav):not(.desktop-nav) {
+    display: none !important;
+  }
+
+  .logout-btn {
+    display: none !important;
+  }
+
+  .main-content {
+    padding-bottom: 112px !important;
+  }
+}
