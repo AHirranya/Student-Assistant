@@ -39,14 +39,17 @@ function Login() {
   };
 
   return (
-    <div className="auth-page">
-      <form className="auth-box" onSubmit={loginUser}>
-        <div className="auth-logo">CM</div>
+    <div className="mobile-auth-page">
+      <div className="auth-welcome-card">
+        <div className="auth-logo-large">CM</div>
 
         <h1>CampusMate</h1>
-        <p className="auth-tagline">Your Smart College Companion</p>
+        <p>Your Smart College Companion</p>
+      </div>
 
-        <h2>Login</h2>
+      <form className="mobile-auth-card" onSubmit={loginUser}>
+        <h2>Welcome Back 👋</h2>
+        <p className="auth-small-text">Login to continue your college dashboard</p>
 
         {message && <div className="error">{message}</div>}
 
@@ -70,7 +73,7 @@ function Login() {
 
         <button type="submit">Login</button>
 
-        <p>
+        <p className="auth-bottom-text">
           New user? <Link to="/signup">Create account</Link>
         </p>
       </form>

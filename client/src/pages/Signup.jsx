@@ -41,14 +41,17 @@ function Signup() {
   };
 
   return (
-    <div className="auth-page">
-      <form className="auth-box" onSubmit={signupUser}>
-        <div className="auth-logo">CM</div>
+    <div className="mobile-auth-page">
+      <div className="auth-welcome-card">
+        <div className="auth-logo-large">CM</div>
 
         <h1>CampusMate</h1>
-        <p className="auth-tagline">Your Smart College Companion</p>
+        <p>Your Smart College Companion</p>
+      </div>
 
+      <form className="mobile-auth-card" onSubmit={signupUser}>
         <h2>Create Account</h2>
+        <p className="auth-small-text">Start managing your college life smarter</p>
 
         {message && <div className="error">{message}</div>}
 
@@ -79,9 +82,9 @@ function Signup() {
           required
         />
 
-        <button type="submit">Signup</button>
+        <button type="submit">Create Account</button>
 
-        <p>
+        <p className="auth-bottom-text">
           Already have account? <Link to="/login">Login</Link>
         </p>
       </form>
